@@ -1,9 +1,12 @@
-var dog, happyDog,petImg, database, foodS,foodObj,lastFed, foodStock,feed,addFood;
+var dog, happyDog,petImg, database, foodS,foodObj,lastFed,bedroom,washroom,garden, foodStock,feed,addFood;
 
 function preload()
 {
   petImg=loadImage("images/dogImg.png");
   happyDog=loadImage("images/dogImg1.png");
+  bedroom=loadImage("images/Bed_Room.png");
+  washroom=loadImage("images/Wash_Room.png");
+  garden=loadImage("images/Garden.png")
 }
 
 function setup() {
@@ -25,6 +28,7 @@ function setup() {
 
 
 function draw() {
+  if(bedroom){
   background(46, 139, 87)
   foodObj.display();
   fedTime=database.ref('feedTime').on("value",function(data){
@@ -39,6 +43,7 @@ function draw() {
   }else{
     text("Last Feed : "+lastFed+" AM",350,30)
   }
+}
 
   drawSprites();
  
@@ -67,3 +72,18 @@ function writeStock(x){
     Food:x
   })
 }
+
+async function changingTime(){
+  var backgroundTime=await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata")
+  var backgroundTimeJSON=await backgroundTime.json()
+  console.log(backgroundTimeJSON);
+  var datetime=backgroundTimeJSON.datetime;
+  var hour =datetime.slice(11,13);
+  if(hour >6 && hour <18){
+      bg="images/Bed_Room.png"
+  }
+  else{
+      bg="images/Garden.png"
+  }
+  backgroundImg=loadImage(bg)
+  }
